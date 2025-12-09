@@ -67,6 +67,12 @@
             object-fit: cover;
             border: 5px solid #4a90e2;
             box-shadow: 0 8px 20px rgba(74, 144, 226, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-photo:hover {
+            transform: scale(1.03);
         }
         
         .profile-text {
@@ -133,6 +139,9 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
         }
         
         .project-card:hover {
@@ -166,6 +175,7 @@
             background: rgba(44, 62, 80, 0.9);
             color: white;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
@@ -177,6 +187,15 @@
         
         .project-image-container:hover .project-overlay {
             opacity: 1;
+        }
+        
+        .github-link-overlay {
+            margin-top: 15px;
+            font-weight: 600;
+            color: #4a90e2;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         
         .project-title {
@@ -200,6 +219,115 @@
             background: linear-gradient(45deg, #f1f8ff, #e9ecef);
             color: #6c757d;
             font-size: 3rem;
+        }
+        
+        .project-controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: #f1f8ff;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .edit-btn, .upload-btn {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .edit-btn:hover, .upload-btn:hover {
+            background-color: #3a7bc8;
+        }
+        
+        .upload-btn {
+            background-color: #2ecc71;
+        }
+        
+        .upload-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .github-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .github-modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .github-modal h3 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            text-align: center;
+        }
+        
+        .github-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .github-input:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+        
+        .save-btn, .cancel-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .save-btn {
+            background-color: #4a90e2;
+            color: white;
+        }
+        
+        .save-btn:hover {
+            background-color: #3a7bc8;
+        }
+        
+        .cancel-btn {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+        }
+        
+        .cancel-btn:hover {
+            background-color: #e9ecef;
         }
         
         footer {
@@ -246,6 +374,15 @@
             .section-title {
                 font-size: 1.8rem;
             }
+            
+            .project-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .edit-btn, .upload-btn {
+                width: 100%;
+            }
         }
         
         @media (max-width: 480px) {
@@ -270,12 +407,13 @@
     
     <div class="container">
         <section class="profile-section">
-            <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Zoe Hidayat" class="profile-photo">
+            <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Zoe Hidayat" class="profile-photo" id="profile-photo">
             <div class="profile-text">
                 <h2>Hi everyone! I'm Zoe Hidayat</h2>
                 <p class="intro-text">"An aspiring material scientist from Indonesia with a dedicated goal to make sustainable energy more efficient and low cost to everyone."</p>
                 <p>I'm passionate about leveraging technology and data science to solve real-world energy challenges. My background in material science combined with programming skills allows me to develop innovative solutions that bridge the gap between scientific research and practical applications.</p>
                 <p>Below are my projects which I have independently developed for internships, competitions, research and more!</p>
+                <p><strong>Click on any project to view it on GitHub!</strong></p>
             </div>
         </section>
         
@@ -283,58 +421,93 @@
             <h2 class="section-title">My Projects</h2>
             <div class="projects-grid">
                 <!-- Project 1 -->
-                <div class="project-card">
+                <a href="#" class="project-card" id="project-1" target="_blank">
                     <div class="project-image-container">
                         <div class="placeholder-img">
                             <i class="fas fa-solar-panel"></i>
                         </div>
                         <div class="project-overlay">
                             <p>A Python-based calculator for predicting Power Conversion Efficiency (PCE) of perovskite solar cells based on material properties and experimental parameters.</p>
+                            <div class="github-link-overlay">
+                                <i class="fab fa-github"></i>
+                                <span>View on GitHub</span>
+                            </div>
                         </div>
                     </div>
                     <div class="project-title">Solar Cell PCE Calculator</div>
-                </div>
+                </a>
                 
                 <!-- Project 2 -->
-                <div class="project-card">
+                <a href="#" class="project-card" id="project-2" target="_blank">
                     <div class="project-image-container">
                         <div class="placeholder-img">
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <div class="project-overlay">
                             <p>Machine learning model to predict calorific value and quality parameters of Indonesian steam bulk coal using historical data and geological features.</p>
+                            <div class="github-link-overlay">
+                                <i class="fab fa-github"></i>
+                                <span>View on GitHub</span>
+                            </div>
                         </div>
                     </div>
                     <div class="project-title">Predictive Model for Indonesian Steam Bulk Coal</div>
-                </div>
+                </a>
                 
                 <!-- Project 3 -->
-                <div class="project-card">
+                <a href="#" class="project-card" id="project-3" target="_blank">
                     <div class="project-image-container">
                         <div class="placeholder-img">
                             <i class="fas fa-globe-asia"></i>
                         </div>
                         <div class="project-overlay">
                             <p>A website promoting Indonesian cultural heritage with interactive features, built with React and Node.js to encourage cultural preservation.</p>
+                            <div class="github-link-overlay">
+                                <i class="fab fa-github"></i>
+                                <span>View on GitHub</span>
+                            </div>
                         </div>
                     </div>
                     <div class="project-title">BudayaBaik Website</div>
-                </div>
+                </a>
                 
                 <!-- Project 4 -->
-                <div class="project-card">
+                <a href="#" class="project-card" id="project-4" target="_blank">
                     <div class="project-image-container">
                         <div class="placeholder-img">
                             <i class="fas fa-cloud-rain"></i>
                         </div>
                         <div class="project-overlay">
                             <p>A machine learning framework to predict and analyze fill-factor degradation in solar cells caused by humidity exposure, using environmental data and material properties.</p>
+                            <div class="github-link-overlay">
+                                <i class="fab fa-github"></i>
+                                <span>View on GitHub</span>
+                            </div>
                         </div>
                     </div>
                     <div class="project-title">ML based Humidity Induced FF Degradation Framework</div>
-                </div>
+                </a>
+            </div>
+            
+            <!-- Project Controls -->
+            <div class="project-controls">
+                <button class="edit-btn" id="edit-github-links">Edit GitHub Links</button>
+                <button class="upload-btn" id="upload-all-images">Upload All Project Images</button>
             </div>
         </section>
+    </div>
+    
+    <!-- GitHub Link Modal -->
+    <div class="github-modal" id="github-modal">
+        <div class="github-modal-content">
+            <h3>Set GitHub Link for Project</h3>
+            <p id="modal-project-name" style="margin-bottom: 15px; font-weight: 600; color: #4a90e2;"></p>
+            <input type="text" id="github-url-input" class="github-input" placeholder="https://github.com/username/project-repository">
+            <div class="modal-buttons">
+                <button class="save-btn" id="save-github-link">Save Link</button>
+                <button class="cancel-btn" id="cancel-modal">Cancel</button>
+            </div>
+        </div>
     </div>
     
     <footer>
@@ -350,51 +523,65 @@
     </footer>
     
     <script>
-        // Function to handle image upload for project cards
-        document.querySelectorAll('.project-image-container').forEach((container, index) => {
-            container.addEventListener('click', function() {
-                // Create file input element
-                const fileInput = document.createElement('input');
-                fileInput.type = 'file';
-                fileInput.accept = 'image/*';
-                
-                fileInput.addEventListener('change', function(event) {
-                    const file = event.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        
-                        reader.onload = function(e) {
-                            // Replace placeholder with uploaded image
-                            const placeholder = container.querySelector('.placeholder-img');
-                            if (placeholder) {
-                                placeholder.style.display = 'none';
-                            }
-                            
-                            // Create img element if it doesn't exist
-                            let img = container.querySelector('.project-image');
-                            if (!img) {
-                                img = document.createElement('img');
-                                img.className = 'project-image';
-                                container.insertBefore(img, container.firstChild);
-                            }
-                            
-                            img.src = e.target.result;
-                            img.alt = `Project ${index + 1} Image`;
-                        };
-                        
-                        reader.readAsDataURL(file);
-                    }
-                });
-                
-                fileInput.click();
-            });
-            
-            // Add hover instruction
-            container.title = "Click to upload project image";
-        });
+        // GitHub URLs for projects (initially empty)
+        const githubUrls = {
+            project1: "",
+            project2: "", 
+            project3: "",
+            project4: ""
+        };
         
-        // Function to handle profile photo upload
-        const profilePhoto = document.querySelector('.profile-photo');
+        // Current project being edited
+        let currentProject = null;
+        
+        // DOM Elements
+        const profilePhoto = document.getElementById('profile-photo');
+        const editGithubBtn = document.getElementById('edit-github-links');
+        const uploadImagesBtn = document.getElementById('upload-all-images');
+        const githubModal = document.getElementById('github-modal');
+        const githubUrlInput = document.getElementById('github-url-input');
+        const modalProjectName = document.getElementById('modal-project-name');
+        const saveGithubBtn = document.getElementById('save-github-link');
+        const cancelModalBtn = document.getElementById('cancel-modal');
+        
+        // Project card elements
+        const projectCards = [
+            document.getElementById('project-1'),
+            document.getElementById('project-2'),
+            document.getElementById('project-3'),
+            document.getElementById('project-4')
+        ];
+        
+        // Project names
+        const projectNames = [
+            "Solar Cell PCE Calculator",
+            "Predictive Model for Indonesian Steam Bulk Coal", 
+            "BudayaBaik Website",
+            "ML based Humidity Induced FF Degradation Framework"
+        ];
+        
+        // Load saved GitHub URLs from localStorage
+        function loadGithubUrls() {
+            const savedUrls = localStorage.getItem('zoeProjectGithubUrls');
+            if (savedUrls) {
+                Object.assign(githubUrls, JSON.parse(savedUrls));
+                
+                // Update project card links
+                for (let i = 0; i < projectCards.length; i++) {
+                    const projectKey = `project${i+1}`;
+                    if (githubUrls[projectKey]) {
+                        projectCards[i].href = githubUrls[projectKey];
+                    }
+                }
+            }
+        }
+        
+        // Save GitHub URLs to localStorage
+        function saveGithubUrls() {
+            localStorage.setItem('zoeProjectGithubUrls', JSON.stringify(githubUrls));
+        }
+        
+        // Handle profile photo upload
         profilePhoto.addEventListener('click', function() {
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
@@ -407,6 +594,8 @@
                     
                     reader.onload = function(e) {
                         profilePhoto.src = e.target.result;
+                        // Save to localStorage
+                        localStorage.setItem('zoeProfilePhoto', e.target.result);
                     };
                     
                     reader.readAsDataURL(file);
@@ -416,7 +605,203 @@
             fileInput.click();
         });
         
-        profilePhoto.title = "Click to upload your profile photo";
+        // Load saved profile photo
+        const savedProfilePhoto = localStorage.getItem('zoeProfilePhoto');
+        if (savedProfilePhoto) {
+            profilePhoto.src = savedProfilePhoto;
+        }
+        
+        // Handle project image uploads
+        projectCards.forEach((card, index) => {
+            const imageContainer = card.querySelector('.project-image-container');
+            
+            // Click to go to GitHub (if link is set)
+            card.addEventListener('click', function(e) {
+                // If no GitHub URL is set, prevent default and show edit modal
+                if (!githubUrls[`project${index+1}`] || githubUrls[`project${index+1}`] === "#") {
+                    e.preventDefault();
+                    openGithubModal(index);
+                }
+                // Otherwise, the link will open in new tab (target="_blank")
+            });
+            
+            // Right-click or long-press on image container to upload image
+            imageContainer.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                uploadProjectImage(index);
+            });
+            
+            // Add title for instructions
+            imageContainer.title = "Right-click to upload image for this project";
+        });
+        
+        // Function to upload project image
+        function uploadProjectImage(projectIndex) {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            
+            fileInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const projectCard = projectCards[projectIndex];
+                        const imageContainer = projectCard.querySelector('.project-image-container');
+                        const placeholder = imageContainer.querySelector('.placeholder-img');
+                        
+                        // Hide placeholder
+                        if (placeholder) {
+                            placeholder.style.display = 'none';
+                        }
+                        
+                        // Create or update image element
+                        let img = imageContainer.querySelector('.project-image');
+                        if (!img) {
+                            img = document.createElement('img');
+                            img.className = 'project-image';
+                            imageContainer.insertBefore(img, imageContainer.firstChild);
+                        }
+                        
+                        img.src = e.target.result;
+                        img.alt = `${projectNames[projectIndex]} Image`;
+                        
+                        // Save to localStorage
+                        localStorage.setItem(`zoeProjectImage${projectIndex+1}`, e.target.result);
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            fileInput.click();
+        }
+        
+        // Load saved project images
+        function loadProjectImages() {
+            for (let i = 0; i < projectCards.length; i++) {
+                const savedImage = localStorage.getItem(`zoeProjectImage${i+1}`);
+                if (savedImage) {
+                    const projectCard = projectCards[i];
+                    const imageContainer = projectCard.querySelector('.project-image-container');
+                    const placeholder = imageContainer.querySelector('.placeholder-img');
+                    
+                    // Hide placeholder
+                    if (placeholder) {
+                        placeholder.style.display = 'none';
+                    }
+                    
+                    // Create or update image element
+                    let img = imageContainer.querySelector('.project-image');
+                    if (!img) {
+                        img = document.createElement('img');
+                        img.className = 'project-image';
+                        imageContainer.insertBefore(img, imageContainer.firstChild);
+                    }
+                    
+                    img.src = savedImage;
+                    img.alt = `${projectNames[i]} Image`;
+                }
+            }
+        }
+        
+        // Open GitHub link modal
+        function openGithubModal(projectIndex) {
+            currentProject = projectIndex;
+            modalProjectName.textContent = projectNames[projectIndex];
+            githubUrlInput.value = githubUrls[`project${projectIndex+1}`] || "";
+            githubModal.style.display = 'flex';
+            githubUrlInput.focus();
+        }
+        
+        // Close GitHub link modal
+        function closeGithubModal() {
+            githubModal.style.display = 'none';
+            currentProject = null;
+        }
+        
+        // Save GitHub link
+        function saveGithubLink() {
+            if (currentProject !== null) {
+                const projectKey = `project${currentProject+1}`;
+                const url = githubUrlInput.value.trim();
+                
+                // Validate URL (basic validation)
+                if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+                    githubUrls[projectKey] = url;
+                    projectCards[currentProject].href = url;
+                    saveGithubUrls();
+                    alert(`GitHub link saved for ${projectNames[currentProject]}!`);
+                } else if (url === "") {
+                    githubUrls[projectKey] = "#";
+                    projectCards[currentProject].href = "#";
+                    saveGithubUrls();
+                    alert(`GitHub link cleared for ${projectNames[currentProject]}. Click the project to set a new link.`);
+                } else {
+                    alert("Please enter a valid URL starting with http:// or https://");
+                    return;
+                }
+                
+                closeGithubModal();
+            }
+        }
+        
+        // Event Listeners
+        editGithubBtn.addEventListener('click', function() {
+            // Open modal for first project
+            openGithubModal(0);
+        });
+        
+        uploadImagesBtn.addEventListener('click', function() {
+            // Upload image for first project
+            uploadProjectImage(0);
+        });
+        
+        saveGithubBtn.addEventListener('click', saveGithubLink);
+        
+        cancelModalBtn.addEventListener('click', closeGithubModal);
+        
+        // Close modal when clicking outside
+        githubModal.addEventListener('click', function(e) {
+            if (e.target === githubModal) {
+                closeGithubModal();
+            }
+        });
+        
+        // Allow Enter key to save in modal
+        githubUrlInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                saveGithubLink();
+            }
+        });
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadGithubUrls();
+            loadProjectImages();
+            
+            // Add instructions to the page
+            const instructions = document.createElement('div');
+            instructions.style.cssText = `
+                background: #f1f8ff;
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 20px;
+                border-left: 4px solid #4a90e2;
+            `;
+            instructions.innerHTML = `
+                <h4 style="margin-bottom: 10px; color: #2c3e50;">How to use this portfolio:</h4>
+                <ul style="padding-left: 20px;">
+                    <li><strong>Click on any project</strong> to open its GitHub repository in a new tab</li>
+                    <li><strong>Right-click on project images</strong> to upload custom images</li>
+                    <li><strong>Click "Edit GitHub Links"</strong> to set GitHub URLs for your projects</li>
+                    <li><strong>Click your profile photo</strong> to upload a new one</li>
+                </ul>
+            `;
+            
+            document.querySelector('.projects-section').appendChild(instructions);
+        });
     </script>
 </body>
 </html>
